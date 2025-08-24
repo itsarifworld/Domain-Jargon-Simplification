@@ -1,0 +1,36 @@
+Domain Jargon Simplification — Workflow (Non‑Neural)
+
+1) Dataset
+   - Collect jargon sentences from medicine, law, technology.
+   - Write plain-English versions.
+   - Save as data/dataset.csv with headers: Original,Simplified
+   - Make test set with only Original in data/test.csv
+
+2) Preprocessing (src/preprocessing.py)
+   - Normalize case, tokenize, POS-tag, lemmatize.
+   - Map Penn Treebank POS to WordNet POS.
+
+3) Jargon Identification (src/jargon_detect.py)
+   - Frequency-based rarity (wordfreq.zipf_frequency).
+   - Custom domain dictionary (small curated map in code).
+   - Optional features: length, syllables, POS.
+
+4) Substitution (src/simplifier.py)
+   - Phrase-level regex replacements (e.g., “null and void” → “cancelled”).
+   - Word-level synonyms from custom dict → else WordNet.
+   - Prefer simpler choices: higher frequency, shorter length.
+
+5) Reconstruction (src/reconstruct.py)
+   - Re-join tokens, fix casing/punctuation.
+   - Optional grammar pass (language-tool-python) if available.
+
+6) Pipeline (main.py)
+   - python main.py --input data/test.csv --output output/submission.csv
+   - For evaluation: python main.py --evaluate --input data/dataset.csv
+
+7) Evaluation (src/evaluate.py)
+   - BLEU against reference Simplified.
+   - (Optional) SARI later.
+
+8) Report
+   - Keep notes; export to report/approach.pdf later.
